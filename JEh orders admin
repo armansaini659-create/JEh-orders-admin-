@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEH Admin - Secure</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #2c3e50; color: white; }
+        .card { background: #ecf0f1; padding: 20px; border-radius: 10px; color: #333; max-width: 400px; margin: auto; }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { background: #e67e22; color: white; border: none; font-weight: bold; cursor: pointer; }
+        #adminSection { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="loginSection" class="card">
+        <h3>JEH Admin Login</h3>
+        <input type="password" id="passInput" placeholder="Password Daalein">
+        <button onclick="checkPass()">Login</button>
+    </div>
+
+    <div id="adminSection" class="card">
+        <h3>Jindal Electronic Hisar</h3>
+        <p>Naya Rate Update Karein:</p>
+        <input type="text" id="pName" placeholder="Product ka naam">
+        <input type="number" id="pRate" placeholder="Rate (₹)">
+        <button onclick="saveProduct()">Update Rate</button>
+        <button onclick="logout()" style="background:#c0392b;">Logout</button>
+    </div>
+
+    <script>
+        // Aapka Password yahan hai: 1234
+        const secret = "1234"; 
+
+        function checkPass() {
+            let p = document.getElementById('passInput').value;
+            if(p === secret) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminSection').style.display = 'block';
+            } else {
+                alert("Galat Password!");
+            }
+        }
+
+        function saveProduct() {
+            let products = JSON.parse(localStorage.getItem('jeh_products')) || [];
+            let name = document.getElementById('pName').value;
+            let rate = document.getElementById('pRate').value;
+            if(name && rate) {
+                products.push({name, rate});
+                localStorage.setItem('jeh_products', JSON.stringify(products));
+                alert("Rate Save Ho Gaya!");
+                document.getElementById('pName').value = '';
+                document.getElementById('pRate').value = '';
+            }
+        }
+
+        function logout() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
